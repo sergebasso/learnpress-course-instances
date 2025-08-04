@@ -1,0 +1,16 @@
+{
+  "[php]": {
+    "editor.defaultFormatter": "valeryanm.vscode-phpsab",
+    "editor.formatOnSave": true
+  },
+  "files.autoSave": "onWindowChange",
+  "editor.linkedEditing": true,
+  "editor.tabSize": 4,
+  "editor.detectIndentation": false,
+  "editor.formatOnSave": true,
+  "phpsab.standard": "WordPress",
+  "phpsab.snifferEnable": true,
+  "phpsab.executablePathCBF": "vendor/squizlabs/php_codesniffer/bin/phpcbf",
+  "phpsab.executablePathCS": "vendor/squizlabs/php_codesniffer/bin/phpcs",
+  "phpsab.snifferShowSources": true
+}

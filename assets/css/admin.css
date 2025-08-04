@@ -1,0 +1,184 @@
+/* NMTO LearnPress Course Instances Admin Styles */
+
+.nmto-course-instances-admin {
+  max-width: 1200px;
+}
+
+.nmto-create-instance {
+  background: #fff;
+  border: 1px solid #c3c4c7;
+  border-radius: 4px;
+  padding: 20px;
+  margin-bottom: 30px;
+}
+
+.nmto-create-instance h2 {
+  margin-top: 0;
+  color: #1d2327;
+  font-size: 1.3em;
+}
+
+.nmto-instances-list {
+  background: #fff;
+  border: 1px solid #c3c4c7;
+  border-radius: 4px;
+  padding: 20px;
+}
+
+.nmto-instances-list h2 {
+  margin-top: 0;
+  color: #1d2327;
+  font-size: 1.3em;
+}
+
+.status-enrollment_not_started {
+  color: #646970;
+}
+
+.status-enrollment_open {
+  color: #00a32a;
+  font-weight: 600;
+}
+
+.status-enrollment_closed {
+  color: #d63638;
+}
+
+.status-in_progress {
+  color: #dba617;
+  font-weight: 600;
+}
+
+.status-completed {
+  color: #6c7781;
+}
+
+/* Form Styling */
+.form-table th {
+  width: 200px;
+  vertical-align: top;
+  padding-top: 15px;
+}
+
+.form-table td {
+  vertical-align: top;
+  padding-top: 10px;
+}
+
+.form-table input[type="datetime-local"],
+.form-table input[type="number"],
+.form-table input[type="text"],
+.form-table select {
+  width: 100%;
+  max-width: 400px;
+}
+
+.form-table textarea {
+  width: 100%;
+  max-width: 600px;
+}
+
+/* Table Styling */
+.wp-list-table th,
+.wp-list-table td {
+  vertical-align: top;
+}
+
+.wp-list-table td small {
+  color: #646970;
+}
+
+/* Meta Box Styling */
+.nmto-course-instances-meta {
+  margin-top: 15px;
+}
+
+.nmto-instances-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.nmto-instances-table th,
+.nmto-instances-table td {
+  padding: 8px 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.nmto-instances-table th {
+  background: #f6f7f7;
+  font-weight: 600;
+}
+
+.nmto-instances-table .status {
+  font-size: 0.9em;
+  padding: 3px 8px;
+  border-radius: 3px;
+  color: #fff;
+}
+
+.nmto-instances-table .status.active {
+  background: #00a32a;
+}
+
+.nmto-instances-table .status.inactive {
+  background: #646970;
+}
+
+.nmto-add-instance-button {
+  margin-top: 15px;
+}
+
+/* Loading States */
+.nmto-loading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.nmto-loading::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #0073aa;
+  border-radius: 50%;
+  animation: nmto-spin 1s linear infinite;
+}
+
+@keyframes nmto-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive Admin */
+@media (max-width: 782px) {
+  .form-table th,
+  .form-table td {
+    display: block;
+    width: 100%;
+    padding: 10px 0;
+  }
+
+  .form-table th {
+    border-bottom: none;
+    padding-bottom: 5px;
+  }
+
+  .form-table input[type="datetime-local"],
+  .form-table input[type="number"],
+  .form-table input[type="text"],
+  .form-table select,
+  .form-table textarea {
+    max-width: 100%;
+  }
+}

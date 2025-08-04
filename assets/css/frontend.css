@@ -1,0 +1,255 @@
+/* NMTO LearnPress Course Instances Frontend Styles */
+
+.nmto-course-instances {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: #f8fafc;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+.nmto-course-instances h3 {
+    color: #2c5282;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.nmto-course-instances h4 {
+    color: #2d3748;
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+    font-weight: 500;
+}
+
+.instances-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.instance-card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e2e8f0;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.instance-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.instance-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.instance-header h5 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #2d3748;
+    flex: 1;
+}
+
+.status-badge {
+    background: #4299e1;
+    color: #fff;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    white-space: nowrap;
+    margin-left: 1rem;
+}
+
+.status-badge.upcoming {
+    background: #9f7aea;
+}
+
+.instance-description {
+    color: #4a5568;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+}
+
+.instance-details {
+    margin-bottom: 1.5rem;
+}
+
+.detail-item {
+    margin-bottom: 0.75rem;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.detail-item strong {
+    color: #2d3748;
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+.instance-actions {
+    text-align: center;
+}
+
+.btn-enroll,
+.btn-login,
+.btn-disabled,
+.btn-success {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-enroll {
+    background: #2c5282;
+    color: #fff;
+}
+
+.btn-enroll:hover {
+    background: #2a4b7c;
+}
+
+.btn-login {
+    background: #4299e1;
+    color: #fff;
+}
+
+.btn-login:hover {
+    background: #3182ce;
+}
+
+.btn-disabled {
+    background: #a0aec0;
+    color: #fff;
+    cursor: not-allowed;
+}
+
+.btn-success {
+    background: #38a169;
+    color: #fff;
+}
+
+.nmto-available-instances,
+.nmto-upcoming-instances {
+    margin-bottom: 2rem;
+}
+
+.nmto-upcoming-instances .instance-card {
+    border-left: 4px solid #9f7aea;
+}
+
+.nmto-available-instances .instance-card.status-enrollment_open {
+    border-left: 4px solid #38a169;
+}
+
+.nmto-available-instances .instance-card.status-enrollment_closed {
+    border-left: 4px solid #e53e3e;
+    opacity: 0.7;
+}
+
+/* User Enrollments Styles */
+.nmto-user-enrollments {
+    margin: 2rem 0;
+}
+
+.enrollments-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+}
+
+.enrollment-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.enrollment-header {
+    margin-bottom: 0.75rem;
+}
+
+.enrollment-course-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #2d3748;
+    margin: 0 0 0.25rem 0;
+}
+
+.enrollment-instance-name {
+    font-size: 0.9rem;
+    color: #4a5568;
+    margin: 0;
+}
+
+.enrollment-dates {
+    font-size: 0.85rem;
+    color: #718096;
+    margin-bottom: 0.5rem;
+}
+
+.enrollment-progress {
+    background: #edf2f7;
+    border-radius: 4px;
+    height: 6px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+}
+
+.enrollment-progress-bar {
+    background: #4299e1;
+    height: 100%;
+    transition: width 0.3s ease;
+}
+
+.enrollment-status {
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.enrollment-status.enrolled {
+    color: #38a169;
+}
+
+.enrollment-status.completed {
+    color: #9f7aea;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .instances-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .instance-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .status-badge {
+        margin-left: 0;
+        margin-top: 0.5rem;
+    }
+
+    .enrollments-grid {
+        grid-template-columns: 1fr;
+    }
+}
