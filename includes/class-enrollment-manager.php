@@ -9,28 +9,28 @@ class NMTO_LearnPress_Course_Enrollment_Manager {
 	 * Enroll user in course instance using the appropriate method
 	 */
 	public static function enroll_user( $instance_id, $user_id ) {
-		return LearnPress_Course_Instances_Database::enroll_student( $instance_id, $user_id );
+		return LP_Addon_CourseInstances_Database::enroll_student( $instance_id, $user_id );
 	}
 
 	/**
 	 * Get user enrollments using the appropriate method
 	 */
 	public static function get_user_enrollments( $user_id, $status = 'enrolled' ) {
-		return LearnPress_Course_Instances_Database::get_user_enrollments( $user_id, $status );
+		return LP_Addon_CourseInstances_Database::get_user_enrollments( $user_id, $status );
 	}
 
 	/**
 	 * Get user enrollment for specific instance
 	 */
 	public static function get_user_instance_enrollment( $user_id, $instance_id ) {
-		return LearnPress_Course_Instances_Database::get_user_instance_enrollment( $user_id, $instance_id );
+		return LP_Addon_CourseInstances_Database::get_user_instance_enrollment( $user_id, $instance_id );
 	}
 
 	/**
 	 * Update student count for instance
 	 */
 	public static function update_student_count( $instance_id ) {
-		LearnPress_Course_Instances_Database::update_student_count( $instance_id );
+		LP_Addon_CourseInstances_Database::update_student_count( $instance_id );
 	}
 
 	/**
@@ -42,13 +42,13 @@ class NMTO_LearnPress_Course_Enrollment_Manager {
 		}
 
 		if ( $instance_id ) {
-			$enrollment = LearnPress_Course_Instances_Database::get_user_instance_enrollment( $user_id, $instance_id );
+			$enrollment = LP_Addon_CourseInstances_Database::get_user_instance_enrollment( $user_id, $instance_id );
 			if ( $enrollment && $enrollment->status === 'enrolled' ) {
 				return self::instance_has_started( $instance_id );
 			}
 		}
 
-		$enrollments = LearnPress_Course_Instances_Database::get_user_enrollments( $user_id, 'enrolled' );
+		$enrollments = LP_Addon_CourseInstances_Database::get_user_enrollments( $user_id, 'enrolled' );
 		foreach ( $enrollments as $enrollment ) {
 			if ( $enrollment->course_id == $course_id ) {
 				return self::instance_has_started( $enrollment->instance_id );
@@ -62,7 +62,7 @@ class NMTO_LearnPress_Course_Enrollment_Manager {
 	 * Check if course instance has started
 	 */
 	private static function instance_has_started( $instance_id ) {
-		$instance = LearnPress_Course_Instances_Database::get_instance( $instance_id );
+		$instance = LP_Addon_CourseInstances_Database::get_instance( $instance_id );
 		if ( $instance ) {
 			$now = current_time( 'mysql' );
 			return $now >= $instance->start_date;
@@ -105,7 +105,7 @@ class NMTO_LearnPress_Course_Enrollment_Manager {
 		);
 
 		// Get total instances
-		$instances                = LearnPress_Course_Instances_Database::get_course_instances();
+		$instances                = LP_Addon_CourseInstances_Database::get_course_instances();
 		$stats['total_instances'] = count( $instances );
 
 		global $wpdb;

@@ -14,7 +14,7 @@ class NMTO_LearnPress_Course_Instance {
 			return false;
 		}
 
-		$instance = LearnPress_Course_Instances_Database::get_instance( $instance_id );
+		$instance = LP_Addon_CourseInstances_Database::get_instance( $instance_id );
 		if ( ! $instance ) {
 			return false;
 		}
@@ -38,7 +38,7 @@ class NMTO_LearnPress_Course_Instance {
 	}
 
 	public static function get_available_instances( $course_id = null ) {
-		$instances = LearnPress_Course_Instances_Database::get_course_instances( $course_id, 'active' );
+		$instances = LP_Addon_CourseInstances_Database::get_course_instances( $course_id, 'active' );
 		$available = array();
 
 		$now = current_time( 'mysql' );
@@ -54,7 +54,7 @@ class NMTO_LearnPress_Course_Instance {
 	}
 
 	public static function get_upcoming_instances( $course_id = null ) {
-		$instances = LearnPress_Course_Instances_Database::get_course_instances( $course_id, 'active' );
+		$instances = LP_Addon_CourseInstances_Database::get_course_instances( $course_id, 'active' );
 		$upcoming  = array();
 
 		$now = current_time( 'mysql' );
@@ -95,7 +95,7 @@ class NMTO_LearnPress_Course_Instance {
 
 	public static function send_enrollment_email( $user_id, $instance_id ) {
 		$user     = get_user_by( 'id', $user_id );
-		$instance = LearnPress_Course_Instances_Database::get_instance( $instance_id );
+		$instance = LP_Addon_CourseInstances_Database::get_instance( $instance_id );
 
 		if ( ! $user || ! $instance ) {
 			return false;
@@ -125,7 +125,7 @@ class NMTO_LearnPress_Course_Instance {
 	}
 
 	public static function get_instance_status( $instance_id ) {
-		$instance = LearnPress_Course_Instances_Database::get_instance( $instance_id );
+		$instance = LP_Addon_CourseInstances_Database::get_instance( $instance_id );
 		if ( ! $instance ) {
 			return 'not_found';
 		}

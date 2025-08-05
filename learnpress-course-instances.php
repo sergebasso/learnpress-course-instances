@@ -1,44 +1,39 @@
 <?php
 /**
- * Plugin Name: LearnPress Course Instances
+ * Plugin Name: LearnPress - Course Instances
  * Description: Adds course scheduling and cohort management to LearnPress
- * Version: 1.0.0
+ * Version: 4.0.0
  * Author: Serge Basso
  * Author URI: https://github.com/sergebasso/learnpress-course-instances
  * License: GPL v3 or later
  * License URI: https://www.gnu.org/licenses/gpl-3.0.html
- * Requires at least: 6.8
- * Requires PHP: 8.2
  * Requires Plugins: learnpress
  * Text Domain: learnpress-course-instances
+ * Domain Path: /languages/
+ * Require_LP_Version: 4.2.6
  *
- * @package LearnPress_Course_Instances
+ * @package learnpress-course-instances
  */
 
-// Prevent direct access.
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+// Prevent loading this file directly.
+defined( 'ABSPATH' ) || exit;
 
-// Define plugin constants.
-define( 'LEARNPRESS_COURSE_INSTANCES_VERSION', '1.0.0' );
-define( 'LEARNPRESS_COURSE_INSTANCES_PATH', plugin_dir_path( __FILE__ ) );
-define( 'LEARNPRESS_COURSE_INSTANCES_URL', plugin_dir_url( __FILE__ ) );
+const LP_ADDON_COURSE_INSTANCES_FILE = __FILE__;
+define( 'LP_ADDON_COURSE_INSTANCES_DIR', plugin_dir_path( __FILE__ ) );
 
 /**
  * Main plugin class.
  *
  * Handles the core functionality of the LearnPress Course Instances plugin.
  *
- * @since 1.0.0
+ * @since 4.0.0
  */
-class LearnPress_Course_Instances {
-
+class LP_Addon_CourseInstances {
 	/**
 	 * Plugin instance.
 	 *
-	 * @since 1.0.0
-	 * @var LearnPress_Course_Instances|null
+	 * @since 4.0.0
+	 * @var LP_Addon_CourseInstances|null
 	 */
 	private static $instance = null;
 
@@ -48,8 +43,8 @@ class LearnPress_Course_Instances {
 	 * Follows the singleton pattern to ensure only one instance
 	 * of the plugin exists at any time.
 	 *
-	 * @since 1.0.0
-	 * @return LearnPress_Course_Instances The single instance of this class
+	 * @since 4.0.0
+	 * @return LP_Addon_CourseInstances The single instance of this class
 	 */
 	public static function get_instance() {
 		if ( null === self::$instance ) {
@@ -64,74 +59,39 @@ class LearnPress_Course_Instances {
 	 * Registers necessary action hooks to initialize the plugin
 	 * after all plugins have been loaded.
 	 *
-	 * @since 1.0.0
+	 * @since 4.0.0
 	 * @return void
 	 */
 	private function __construct() {
-		/**
-		 * Hook into WordPress 'plugins_loaded' action.
-		 *
-		 * This ensures that the plugin's initialization method (init) is called
-		 * after all plugins have been loaded. Using 'plugins_loaded' hook is important
-		 * for proper plugin dependency management, allowing this plugin to interact
-		 * with LearnPress or other required plugins only after they are fully loaded.
-		 *
-		 * @since 1.0.0
-		 * @return void
-		 */
-		add_action( 'plugins_loaded', array( $this, 'init' ) );
+		// if ( ! class_exists( 'LearnPress' ) ) {
+		// add_action( 'admin_notices', array( $this, 'learnpress_required_notice' ) );
+		// return;
+		// }
+
+		add_action( 'learn-press/ready', array( $this, 'load' ) );
 	}
 
 	/**
-	 * Initialize the plugin.
+	 * Load the addon.
 	 *
 	 * This method checks if LearnPress is installed and active.
 	 * If not, it displays a notice. Otherwise, it loads components
 	 * and initializes hooks.
 	 *
-	 * @since 1.0.0
+	 * @since 4.0.0
 	 * @return void
 	 */
-	public function init() {
-		if ( ! class_exists( 'LearnPress' ) ) {
-			add_action( 'admin_notices', array( $this, 'learnpress_required_notice' ) );
-			return;
-		}
+	public function load() {
+		require_once LP_ADDON_COURSE_INSTANCES_DIR . 'includes/class-database.php';
+		// require_once LP_ADDON_COURSE_INSTANCES_DIR . 'includes/class-enrollment-manager.php';
+		// require_once LP_ADDON_COURSE_INSTANCES_DIR . 'includes/class-course-instance-integration.php';
+		// require_once LP_ADDON_COURSE_INSTANCES_DIR . 'includes/class-course-instance.php';
+		require_once LP_ADDON_COURSE_INSTANCES_DIR . 'includes/class-admin.php';
+		// require_once LP_ADDON_COURSE_INSTANCES_DIR . 'includes/class-frontend.php';
 
-		// $this->load_includes();
-		// $this->init_hooks();
-	}
-
-	/**
-	 * Loads required plugin files and classes.
-	 *
-	 * This method includes all necessary component files needed for the plugin functionality.
-	 *
-	 * @since 1.0.0
-	 * @return void
-	 */
-	private function load_includes() {
-		require_once LEARNPRESS_COURSE_INSTANCES_PATH . 'includes/class-database.php';
-		require_once LEARNPRESS_COURSE_INSTANCES_PATH . 'includes/class-enrollment-manager.php';
-		require_once LEARNPRESS_COURSE_INSTANCES_PATH . 'includes/class-course-instance-integration.php';
-		require_once LEARNPRESS_COURSE_INSTANCES_PATH . 'includes/class-course-instance.php';
-		require_once LEARNPRESS_COURSE_INSTANCES_PATH . 'includes/class-admin.php';
-		require_once LEARNPRESS_COURSE_INSTANCES_PATH . 'includes/class-frontend.php';
-	}
-
-	/**
-	 * Initializes all hooks and components for the plugin.
-	 *
-	 * This method instantiates admin, frontend, and integration classes
-	 * to register their respective hooks and functionalities.
-	 *
-	 * @since 1.0.0
-	 * @return void
-	 */
-	private function init_hooks() {
-		LearnPress_Course_Instances_Admin::getInstance();
-		LearnPress_Course_Instances_Frontend::getInstance();
-		LearnPress_Course_Instance_Integration::getInstance();
+		LP_Addon_CourseInstances_Admin::get_instance();
+		// LP_Addon_CourseInstances_Frontend::getInstance();
+		// LP_Addon_CourseInstances_Integration::getInstance();
 	}
 
 	/**
@@ -140,23 +100,15 @@ class LearnPress_Course_Instances {
 	 * This function outputs an error notice in the WordPress admin
 	 * informing users that LearnPress plugin is required.
 	 *
-	 * @since 1.0.0
+	 * @since 4.0.0
 	 * @return void
 	 */
 	public function learnpress_required_notice() {
 		?>
 		<div class="notice notice-error">
-			<p><?php esc_html_e( 'LearnPress Course Instances requires LearnPress to be installed and activated.', 'learnpress-course-instances' ); ?>
-			</p>
+			<p><?php esc_html_e( 'LearnPress Course Instances requires LearnPress to be installed and activated.', 'learnpress-course-instances' ); ?></p>
 		</div>
 		<?php
-	}
-
-	/**
-	 * Cleanup options and data on plugin deactivation
-	 */
-	public static function deactivate() {
-		// Cleanup if needed.
 	}
 
 	/**
@@ -165,18 +117,23 @@ class LearnPress_Course_Instances {
 	 * This method is called when the plugin is activated and sets up
 	 * the required database structure for course instances.
 	 *
-	 * @since 1.0.0
+	 * @since 4.0.0
 	 * @return void
 	 */
 	public static function activate() {
-		require_once LEARNPRESS_COURSE_INSTANCES_PATH . 'includes/class-database.php';
-		LearnPress_Course_Instances_Database::create_tables();
+		require_once LP_ADDON_COURSE_INSTANCES_DIR . 'includes/class-database.php';
+		LP_Addon_CourseInstances_Database::create_tables();
+	}
+
+	/**
+	 * Cleanup options and data on plugin deactivation
+	 */
+	public static function deactivate() {
+		// Cleanup if needed.
 	}
 }
 
-// Initialize the plugin.
-LearnPress_Course_Instances::get_instance();
+LP_Addon_CourseInstances::get_instance();
 
-// Activation/Deactivation hooks.
-register_activation_hook( __FILE__, array( 'LearnPress_Course_Instances', 'activate' ) );
-register_deactivation_hook( __FILE__, array( 'LearnPress_Course_Instances', 'deactivate' ) );
+register_activation_hook( __FILE__, array( 'LP_Addon_CourseInstances', 'activate' ) );
+// register_deactivation_hook( __FILE__, array( 'LP_Addon_CourseInstances', 'deactivate' ) );

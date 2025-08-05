@@ -1,25 +1,31 @@
 <div class="wrap">
-	<h1><?php _e( 'Course Instances', 'learnpress-course-instances' ); ?></h1>
+	<h1><?php esc_html_e( 'Course Instances', 'learnpress-course-instances' ); ?></h1>
 
 	<?php
-	// Show success/error messages
-	if ( isset( $_GET['deleted'] ) && $_GET['deleted'] == '1' && isset( $_GET['message'] ) ) {
-		echo '<div class="notice notice-success is-dismissible"><p>' . esc_html( urldecode( $_GET['message'] ) ) . '</p></div>';
-	}
+	// Show success/error messages.
+	// if ( isset( $_GET['deleted'] ) && $_GET['deleted'] == '1' && isset( $_GET['message'] ) ) {
+	// echo '<div class="notice notice-success is-dismissible"><p>' . esc_html( urldecode( $_GET['message'] ) ) . '</p></div>';
+	// }
 
-	$active_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'instances';
+	// Sanitize the tab value from $_GET with nonce verification.
+	$active_tab = 'instances'; // Default tab.
+	if ( isset( $_GET['tab'] ) &&
+		( ! isset( $_GET['_wpnonce'] ) ||
+			wp_verify_nonce( sanitize_key( $_GET['_wpnonce'] ), 'learnpress_course_instances_tab' ) ) ) {
+		$active_tab = sanitize_key( $_GET['tab'] );
+	}
 	?>
 
 	<nav class="nav-tab-wrapper">
-		<a href="?page=learnpress-course-instances&tab=instances" class="nav-tab <?php echo $active_tab === 'instances' ? 'nav-tab-active' : ''; ?>">
-			<?php _e( 'Course Instances', 'learnpress-course-instances' ); ?>
+		<a href="?page=learnpress-course-instances&tab=instances" class="nav-tab <?php echo 'instances' === $active_tab ? 'nav-tab-active' : ''; ?>">
+			<?php esc_html_e( 'Course Instances', 'learnpress-course-instances' ); ?>
 		</a>
-		<a href="?page=learnpress-course-instances&tab=unlinked" class="nav-tab <?php echo $active_tab === 'unlinked' ? 'nav-tab-active' : ''; ?>">
-			<?php _e( 'Unlinked Enrollments', 'learnpress-course-instances' ); ?>
+		<a href="?page=learnpress-course-instances&tab=unlinked" class="nav-tab <?php echo 'unlinked' === $active_tab ? 'nav-tab-active' : ''; ?>">
+			<?php esc_html_e( 'Unlinked Enrollments', 'learnpress-course-instances' ); ?>
 			<?php
-			$unlinked_count = LearnPress_Course_Instances_Database::get_total_unlinked_enrollments_count();
+			$unlinked_count = LP_Addon_CourseInstances_Database::get_total_unlinked_enrollments_count();
 			if ( $unlinked_count > 0 ) {
-				echo '<span class="awaiting-mod count-' . $unlinked_count . '"><span class="pending-count">' . $unlinked_count . '</span></span>';
+				echo '<span class="awaiting-mod count-' . esc_html( $unlinked_count ) . '"><span class="pending-count">(' . esc_html( $unlinked_count ) . ')</span></span>';
 			}
 			?>
 		</a>
@@ -105,25 +111,6 @@
 						</td>
 					</tr>
 
-					<tr>
-						<th scope="row">
-							<label for="instructor_id"><?php _e( 'Instructor', 'learnpress-course-instances' ); ?></label>
-						</th>
-						<td>
-							<?php
-							$instructors = get_users( array( 'role' => 'lp_teacher' ) );
-							if ( empty( $instructors ) ) {
-								$instructors = get_users( array( 'role' => 'administrator' ) );
-							}
-							?>
-							<select name="instructor_id" id="instructor_id" required>
-								<option value=""><?php _e( 'Select instructor', 'learnpress-course-instances' ); ?></option>
-								<?php foreach ( $instructors as $instructor ) : ?>
-									<option value="<?php echo $instructor->ID; ?>"><?php echo esc_html( $instructor->display_name ); ?></option>
-								<?php endforeach; ?>
-							</select>
-						</td>
-					</tr>
 				</table>
 
 				<?php submit_button( __( 'Create Course Instance', 'learnpress-course-instances' ) ); ?>
@@ -214,7 +201,7 @@
 					<?php foreach ( $unlinked_courses as $course_data ) : ?>
 						<?php
 						$course               = get_post( $course_data->course_id );
-						$unlinked_enrollments = LearnPress_Course_Instances_Database::get_course_unlinked_enrollments( $course_data->course_id );
+						$unlinked_enrollments = LP_Addon_CourseInstances_Database::get_course_unlinked_enrollments( $course_data->course_id );
 						?>
 
 						<div class="nmto-unlinked-course" style="border: 1px solid #ccd0d4; padding: 20px; margin: 20px 0; background: #fff;">

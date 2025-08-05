@@ -1,36 +1,66 @@
 <?php
 /**
- * Admin interface for course scheduling
+ * Admin class for the LearnPress Course Instances plugin.
+ *
+ * @since 4.0.0
  */
-
-class LearnPress_Course_Instances_Admin {
-
+class LP_Addon_CourseInstances_Admin {
+	/**
+	 * Singleton instance of the class.
+	 *
+	 * @since 4.0.0
+	 * @var LP_Addon_CourseInstances_Admin|null
+	 */
 	private static $instance = null;
 
-	public static function getInstance() {
-		if ( self::$instance === null ) {
+	/**
+	 * Returns the singleton instance of this class.
+	 *
+	 * Follows the singleton pattern to ensure only one instance
+	 * of the plugin exists at any time.
+	 *
+	 * @since 4.0.0
+	 * @return LP_Addon_CourseInstances_Admin The single instance of this class
+	 */
+	public static function get_instance() {
+		if ( null === self::$instance ) {
 			self::$instance = new self();
 		}
 		return self::$instance;
 	}
 
+	/**
+	 * Constructor for the class.
+	 *
+	 * Initializes the admin functionality by adding necessary hooks and filters.
+	 *
+	 * @since 4.0.0
+	 */
 	private function __construct() {
 		add_action( 'admin_menu', array( $this, 'add_admin_menu' ) );
-		add_action( 'add_meta_boxes', array( $this, 'add_course_meta_boxes' ) );
-		add_action( 'wp_ajax_create_course_instance', array( $this, 'ajax_create_instance' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
-		add_action( 'admin_notices', array( $this, 'show_unlinked_enrollments_notice' ) );
+		// add_action( 'add_meta_boxes', array( $this, 'add_course_meta_boxes' ) );
+		// add_action( 'wp_ajax_create_course_instance', array( $this, 'ajax_create_instance' ) );
+		// add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
+		// add_action( 'admin_notices', array( $this, 'show_unlinked_enrollments_notice' ) );
 
-		// Prevent course deletion if instances exist
-		add_action( 'wp_trash_post', array( $this, 'prevent_course_deletion_with_instances' ) );
-		add_action( 'before_delete_post', array( $this, 'prevent_course_deletion_with_instances' ) );
-		add_filter( 'user_has_cap', array( $this, 'remove_delete_capability_for_courses_with_instances' ), 10, 4 );
-		add_action( 'admin_notices', array( $this, 'show_course_deletion_warning' ) );
+		// // Prevent course deletion if instances exist
+		// add_action( 'wp_trash_post', array( $this, 'prevent_course_deletion_with_instances' ) );
+		// add_action( 'before_delete_post', array( $this, 'prevent_course_deletion_with_instances' ) );
+		// add_filter( 'user_has_cap', array( $this, 'remove_delete_capability_for_courses_with_instances' ), 10, 4 );
+		// add_action( 'admin_notices', array( $this, 'show_course_deletion_warning' ) );
 
-		// Handle forced course deletion (when instances are manually removed first)
-		add_action( 'delete_post', array( $this, 'cleanup_course_instances_on_deletion' ) );
+		// // Handle forced course deletion (when instances are manually removed first)
+		// add_action( 'delete_post', array( $this, 'cleanup_course_instances_on_deletion' ) );
 	}
 
+	/**
+	 * Add Course Instances submenu to the LearnPress admin menu.
+	 *
+	 * Creates a submenu page for managing course instances under the main LearnPress menu.
+	 *
+	 * @since 4.0.0
+	 * @return void
+	 */
 	public function add_admin_menu() {
 		add_submenu_page(
 			'learn_press',
@@ -42,35 +72,44 @@ class LearnPress_Course_Instances_Admin {
 		);
 	}
 
+	/**
+	 * Renders the admin page for course instances.
+	 *
+	 * Handles form submissions for creating and deleting instances,
+	 * and displays the appropriate tab content based on the current view.
+	 *
+	 * @since 4.0.0
+	 * @return void
+	 */
 	public function admin_page() {
-		if ( isset( $_POST['action'] ) && $_POST['action'] === 'create_instance' ) {
-			$this->handle_create_instance();
-		}
+		// if ( isset( $_POST['action'] ) && $_POST['action'] === 'create_instance' ) {
+		// $this->handle_create_instance();
+		// }
 
-		// Handle instance deletion
-		if ( isset( $_GET['action'] ) && $_GET['action'] === 'delete_instance' && isset( $_GET['instance_id'] ) ) {
-			$this->handle_delete_instance();
-		}
+		// // Handle instance deletion
+		// if ( isset( $_GET['action'] ) && $_GET['action'] === 'delete_instance' && isset( $_GET['instance_id'] ) ) {
+		// $this->handle_delete_instance();
+		// }
 
-		$active_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'instances';
+		// $active_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'instances';
 
-		$courses = get_posts(
-			array(
-				'post_type'   => 'lp_course',
-				'numberposts' => -1,
-				'post_status' => 'publish',
-			)
-		);
+		// $courses = get_posts(
+		// array(
+		// 'post_type'   => 'lp_course',
+		// 'numberposts' => -1,
+		// 'post_status' => 'publish',
+		// )
+		// );
 
-		$instances = LearnPress_Course_Instances_Database::get_course_instances();
+		// $instances = LP_Addon_CourseInstances_Database::get_course_instances();
 
-		// Get unlinked enrollments data if on that tab
-		$unlinked_courses = array();
-		if ( $active_tab === 'unlinked' ) {
-			$unlinked_courses = LearnPress_Course_Instances_Database::get_courses_with_unlinked_enrollments();
-		}
+		// // Get unlinked enrollments data if on that tab
+		// $unlinked_courses = array();
+		// if ( $active_tab === 'unlinked' ) {
+		// $unlinked_courses = LP_Addon_CourseInstances_Database::get_courses_with_unlinked_enrollments();
+		// }
 
-		include NMTO_LEARNPRESS_COURSE_INSTANCES_PATH . 'templates/admin-page.php';
+		include LP_ADDON_COURSE_INSTANCES_DIR . 'templates/admin-page.php';
 	}
 
 	public function add_course_meta_boxes() {
@@ -97,7 +136,7 @@ class LearnPress_Course_Instances_Admin {
 		}
 
 		// Get instance details for logging
-		$instance = LearnPress_Course_Instances_Database::get_instance( $instance_id );
+		$instance = LP_Addon_CourseInstances_Database::get_instance( $instance_id );
 
 		if ( ! $instance ) {
 			wp_die( __( 'Instance not found.', 'learnpress-course-instances' ) );
@@ -109,7 +148,7 @@ class LearnPress_Course_Instances_Admin {
 		}
 
 		// Delete the instance
-		$success = LearnPress_Course_Instances_Database::delete_course_instance( $instance_id );
+		$success = LP_Addon_CourseInstances_Database::delete_course_instance( $instance_id );
 
 		if ( $success ) {
 			$message = sprintf(
@@ -126,7 +165,7 @@ class LearnPress_Course_Instances_Admin {
 	}
 
 	public function course_instances_meta_box( $post ) {
-		$instances = LearnPress_Course_Instances_Database::get_course_instances( $post->ID );
+		$instances = LP_Addon_CourseInstances_Database::get_course_instances( $post->ID );
 		include NMTO_LEARNPRESS_COURSE_INSTANCES_PATH . 'templates/course-instances-meta-box.php';
 	}
 
@@ -204,7 +243,7 @@ class LearnPress_Course_Instances_Admin {
 			'instructor_id'    => intval( $_POST['instructor_id'] ),
 		);
 
-		$instance_id = LearnPress_Course_Instances_Database::create_course_instance( $data );
+		$instance_id = LP_Addon_CourseInstances_Database::create_course_instance( $data );
 
 		if ( $instance_id ) {
 			wp_send_json_success(
@@ -239,7 +278,7 @@ class LearnPress_Course_Instances_Admin {
 			'instructor_id'    => intval( $_POST['instructor_id'] ),
 		);
 
-		$instance_id = LearnPress_Course_Instances_Database::create_course_instance( $data );
+		$instance_id = LP_Addon_CourseInstances_Database::create_course_instance( $data );
 
 		if ( $instance_id ) {
 			add_action(
@@ -269,7 +308,7 @@ class LearnPress_Course_Instances_Admin {
 			return;
 		}
 
-		$total_unlinked = LearnPress_Course_Instances_Database::get_total_unlinked_enrollments_count();
+		$total_unlinked = LP_Addon_CourseInstances_Database::get_total_unlinked_enrollments_count();
 
 		if ( $total_unlinked > 0 ) {
 			$message = sprintf(
@@ -293,7 +332,7 @@ class LearnPress_Course_Instances_Admin {
 	 * Display warnings in course meta box for unlinked enrollments
 	 */
 	public function show_course_unlinked_warning( $course_id ) {
-		$unlinked = LearnPress_Course_Instances_Database::get_course_unlinked_enrollments( $course_id );
+		$unlinked = LP_Addon_CourseInstances_Database::get_course_unlinked_enrollments( $course_id );
 
 		if ( ! empty( $unlinked ) ) {
 			$count = count( $unlinked );
@@ -335,7 +374,7 @@ class LearnPress_Course_Instances_Admin {
 		}
 
 		// Check if this course has any instances
-		$instances = LearnPress_Course_Instances_Database::get_course_instances( $post_id );
+		$instances = LP_Addon_CourseInstances_Database::get_course_instances( $post_id );
 
 		if ( ! empty( $instances ) ) {
 			// Store the error in a transient to show later
@@ -369,7 +408,7 @@ class LearnPress_Course_Instances_Admin {
 
 		// Check if this is a delete action on an lp_course
 		if ( in_array( $action, array( 'delete_post', 'delete_others_posts' ) ) && get_post_type( $post_id ) === 'lp_course' ) {
-			$instances = LearnPress_Course_Instances_Database::get_course_instances( $post_id );
+			$instances = LP_Addon_CourseInstances_Database::get_course_instances( $post_id );
 
 			if ( ! empty( $instances ) ) {
 				// Remove delete capability for this specific course
@@ -423,7 +462,7 @@ class LearnPress_Course_Instances_Admin {
 		// Also show warning on individual course edit pages if instances exist
 		global $post;
 		if ( $post && $post->post_type === 'lp_course' && isset( $_GET['action'] ) && $_GET['action'] === 'edit' ) {
-			$instances = LearnPress_Course_Instances_Database::get_course_instances( $post->ID );
+			$instances = LP_Addon_CourseInstances_Database::get_course_instances( $post->ID );
 
 			if ( ! empty( $instances ) ) {
 				$instance_count  = count( $instances );
@@ -471,7 +510,7 @@ class LearnPress_Course_Instances_Admin {
 		}
 
 		// Clean up any remaining course instances and related data
-		LearnPress_Course_Instances_Database::delete_all_course_instances( $post_id );
+		LP_Addon_CourseInstances_Database::delete_all_course_instances( $post_id );
 
 		// Log the cleanup for debugging
 		error_log( 'NMTO Course Instances: Cleaned up instances for deleted course ID: ' . $post_id );

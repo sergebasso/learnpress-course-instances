@@ -161,7 +161,7 @@ class LearnPress_Course_Instances_Frontend {
 		}
 
 		$user_id     = get_current_user_id();
-		$enrollments = LearnPress_Course_Instances_Database::get_user_enrollments( $user_id );
+		$enrollments = LP_Addon_CourseInstances_Database::get_user_enrollments( $user_id );
 
 		if ( empty( $enrollments ) ) {
 			return '<p>' . __( 'You are not enrolled in any course instances.', 'learnpress-course-instances' ) . '</p>';
@@ -288,7 +288,7 @@ class LearnPress_Course_Instances_Frontend {
 		}
 
 		// Check if user has any enrollment for this course
-		$enrollment = LearnPress_Course_Instances_Database::get_user_course_enrollment( $user_id, $course_id );
+		$enrollment = LP_Addon_CourseInstances_Database::get_user_course_enrollment( $user_id, $course_id );
 
 		if ( $enrollment ) {
 			// Check if enrollment is linked to an instance
@@ -309,7 +309,7 @@ class LearnPress_Course_Instances_Frontend {
 		}
 
 		// Check if user has enrollment linked to an instance
-		$enrollment = LearnPress_Course_Instances_Database::get_user_course_enrollment( $user_id, $course_id );
+		$enrollment = LP_Addon_CourseInstances_Database::get_user_course_enrollment( $user_id, $course_id );
 
 		if ( $enrollment ) {
 			$instance_link = learn_press_get_user_item_meta( $enrollment->user_item_id, '_nmto_instance_id', true );
@@ -320,7 +320,7 @@ class LearnPress_Course_Instances_Frontend {
 			}
 
 			// Check if instance dates are valid (course has started)
-			$instance = LearnPress_Course_Instances_Database::get_instance( $instance_link );
+			$instance = LP_Addon_CourseInstances_Database::get_instance( $instance_link );
 			if ( $instance ) {
 				$now = current_time( 'mysql' );
 				if ( $now < $instance->start_date ) {
@@ -341,7 +341,7 @@ class LearnPress_Course_Instances_Frontend {
 		}
 
 		$user_id    = get_current_user_id();
-		$enrollment = LearnPress_Course_Instances_Database::get_user_course_enrollment( $user_id, $post->ID );
+		$enrollment = LP_Addon_CourseInstances_Database::get_user_course_enrollment( $user_id, $post->ID );
 
 		if ( ! $enrollment ) {
 			echo '<div class="lp-notice lp-notice-warning">
@@ -364,7 +364,7 @@ class LearnPress_Course_Instances_Frontend {
 			return false;
 		}
 
-		$enrollment = LearnPress_Course_Instances_Database::get_user_course_enrollment( $user_id, $course_id );
+		$enrollment = LP_Addon_CourseInstances_Database::get_user_course_enrollment( $user_id, $course_id );
 
 		if ( ! $enrollment ) {
 			return false; // Not enrolled at all
@@ -377,7 +377,7 @@ class LearnPress_Course_Instances_Frontend {
 		}
 
 		// Check if instance has started
-		$instance = LearnPress_Course_Instances_Database::get_instance( $instance_link );
+		$instance = LP_Addon_CourseInstances_Database::get_instance( $instance_link );
 		if ( $instance ) {
 			$now = current_time( 'mysql' );
 			return $now >= $instance->start_date;
@@ -422,7 +422,7 @@ class LearnPress_Course_Instances_Frontend {
 			return false;
 		}
 
-		$enrollment = LearnPress_Course_Instances_Database::get_user_course_enrollment( $user_id, $course_id );
+		$enrollment = LP_Addon_CourseInstances_Database::get_user_course_enrollment( $user_id, $course_id );
 
 		if ( ! $enrollment ) {
 			return false;
@@ -435,7 +435,7 @@ class LearnPress_Course_Instances_Frontend {
 		}
 
 		// Check if instance has started
-		$instance = LearnPress_Course_Instances_Database::get_instance( $instance_link );
+		$instance = LP_Addon_CourseInstances_Database::get_instance( $instance_link );
 		if ( $instance ) {
 			$now = current_time( 'mysql' );
 			return $now >= $instance->start_date;

@@ -92,13 +92,13 @@ class NMTO_LearnPress_Course_Instance_Integration {
 		}
 
 		// Check enrollment
-		$enrollment = LearnPress_Course_Instances_Database::get_user_instance_enrollment( $user_id, $instance_id );
+		$enrollment = LP_Addon_CourseInstances_Database::get_user_instance_enrollment( $user_id, $instance_id );
 		if ( ! $enrollment || $enrollment->status !== 'enrolled' ) {
 			return false;
 		}
 
 		// Check if instance has started
-		$instance = LearnPress_Course_Instances_Database::get_instance( $instance_id );
+		$instance = LP_Addon_CourseInstances_Database::get_instance( $instance_id );
 		if ( $instance ) {
 			$now = current_time( 'mysql' );
 			return $now >= $instance->start_date;
@@ -138,7 +138,7 @@ class NMTO_LearnPress_Course_Instance_Integration {
 		if ( $item && $item->item_type === 'lp_course_instance' ) {
 			// Update instance student count if status changed
 			if ( isset( $data['status'] ) ) {
-				LearnPress_Course_Instances_Database::update_student_count( $item->item_id );
+				LP_Addon_CourseInstances_Database::update_student_count( $item->item_id );
 			}
 		}
 	}
@@ -196,7 +196,7 @@ class NMTO_LearnPress_Course_Instance_Item {
 
 	public function __construct( $instance_id ) {
 		$this->instance_id   = $instance_id;
-		$this->instance_data = LearnPress_Course_Instances_Database::get_instance( $instance_id );
+		$this->instance_data = LP_Addon_CourseInstances_Database::get_instance( $instance_id );
 	}
 
 	public function get_id() {
